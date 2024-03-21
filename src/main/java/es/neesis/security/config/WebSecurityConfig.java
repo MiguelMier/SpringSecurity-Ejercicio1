@@ -1,24 +1,17 @@
 package es.neesis.security.config;
 
 import es.neesis.security.repository.UserRepository;
-import es.neesis.security.service.UserDetailsService;
+import es.neesis.security.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -28,9 +21,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private final UserRepository userRepository;
-    private final UserDetailsService userDetailsService;
+    private final IUserService userDetailsService;
 
-    public WebSecurityConfig(UserRepository userRepository, UserDetailsService userDetailsService) {
+    public WebSecurityConfig(UserRepository userRepository, IUserService userDetailsService) {
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
     }
@@ -68,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder authentication) throws Exception {
+    public void configureGlobalPROVISIONAL(AuthenticationManagerBuilder authentication) throws Exception {
         authentication.inMemoryAuthentication()
                 .withUser("ADMIN")
                 .password(passwordEncoder().encode("PASSWORD"))

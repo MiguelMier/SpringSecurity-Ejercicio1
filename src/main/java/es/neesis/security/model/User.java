@@ -1,8 +1,10 @@
 package es.neesis.security.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.authentication.jaas.AuthorityGranter;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name="USER")
@@ -14,13 +16,14 @@ public class User implements Serializable {
     private int idUser;
 
     @Column(name = "username")
+    @OneToMany(mappedBy="username")
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
+    @ManyToMany
+    Set<Role> authority;
 
     public int getIdUser() {
         return idUser;
@@ -46,11 +49,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Set<Role> getAuthority() {
+        return authority;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthority(Set<Role> authority) {
+        this.authority = authority;
     }
 }
